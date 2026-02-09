@@ -1,3 +1,9 @@
+import HomePage from  "./homePage"
+import GameSettingsPage from "./gameSettingsPage"
+import GameListPage from "./gameListPage"
+import DownloadPage from "./downloadPage"
+import LauncherSettingsPage from "./launcherSettingsPage"
+
 @Entry
 @Component
 struct VerticalTabExample {
@@ -7,11 +13,13 @@ struct VerticalTabExample {
     Row() {
       // 侧边 Tab 栏
       Column() {
-        ForEach([0, 1, 2], (index: number) => {
-          this.SideTabItem('Tab ' + (index + 1), index)
-        })
+        this.SideTabItem("主页面" ,'app.media.home' , 0)
+        this.SideTabItem("游戏设置", 'app.media.tool', 1)
+        this.SideTabItem("游戏列表",'app.media.list', 2)
+        this.SideTabItem("下载",'app.media.download', 3)
+        this.SideTabItem("启动器设置",'app.media.settings', 4)
       }
-      .width(120)
+      .width(60)
       .height('100%')
       .backgroundColor('#F5F5F5')
       .padding({ top: 20 })
@@ -19,11 +27,15 @@ struct VerticalTabExample {
       // 内容区域
       Column() {
         if (this.currentIndex === 0) {
-          this.Tab1Content()
+          HomePage()
         } else if (this.currentIndex === 1) {
-          this.Tab2Content()
-        } else {
-          this.Tab3Content()
+          GameSettingsPage()
+        } else if (this.currentIndex === 2) {
+          GameListPage()
+        } else if (this.currentIndex === 3) {
+          DownloadPage()
+        } else{
+          LauncherSettingsPage()
         }
       }
       .width('100%')
@@ -33,16 +45,13 @@ struct VerticalTabExample {
     .height('100%')
   }
 
-  @Builder SideTabItem(text: string, index: number) {
+  @Builder SideTabItem(text: string, icon: string , index: number) {
     Row() {
-      Image(this.currentIndex === index ? 'selected_icon.png' : 'normal_icon.png')
+      Image($r(icon))
         .width(20)
         .height(20)
         .margin({ right: 10 })
-
-      Text(text)
-        .fontSize(16)
-        .fontColor(this.currentIndex === index ? '#007DFF' : '#333333')
+        .autoResize(true)
     }
     .width('100%')
     .height(60)
@@ -54,38 +63,12 @@ struct VerticalTabExample {
     .onClick(() => {
       this.currentIndex = index
     })
-  }
-
-  @Builder Tab1Content() {
-    Column() {
-      Text('首页内容')
-        .fontSize(30)
-        .fontWeight(FontWeight.Bold)
-    }
-    .width('100%')
-    .height('100%')
-    .justifyContent(FlexAlign.Center)
-  }
-
-  @Builder Tab2Content() {
-    Column() {
-      Text('分类内容')
-        .fontSize(30)
-        .fontWeight(FontWeight.Bold)
-    }
-    .width('100%')
-    .height('100%')
-    .justifyContent(FlexAlign.Center)
-  }
-
-  @Builder Tab3Content() {
-    Column() {
-      Text('我的内容')
-        .fontSize(30)
-        .fontWeight(FontWeight.Bold)
-    }
-    .width('100%')
-    .height('100%')
-    .justifyContent(FlexAlign.Center)
+    .bindTips(text,{
+      appearingTime: 700,
+      disappearingTime: 300,
+      appearingTimeWithContinuousOperation: 300,
+      disappearingTimeWithContinuousOperation: 0,
+      enableArrow: true
+    })
   }
 }
