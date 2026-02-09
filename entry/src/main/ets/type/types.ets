@@ -31,7 +31,7 @@ export interface ILauncherSettings{
 }
 
 // 实现类
-export class Account implements IAccount {
+export default  class Account implements IAccount {
     public uid: string;
     public name: string;
 

@@ -3,72 +3,112 @@ import GameSettingsPage from "./gameSettingsPage"
 import GameListPage from "./gameListPage"
 import DownloadPage from "./downloadPage"
 import LauncherSettingsPage from "./launcherSettingsPage"
+import { deviceInfo } from "@kit.BasicServicesKit"
+import { display } from "@kit.ArkUI"
+
+interface TabItem {
+    text: string;
+    icon: Resource;
+}
 
 @Entry
 @Component
 struct VerticalTabExample {
-  @State currentIndex: number = 0
+    @State currentIndex: number = 0
+    private screen: display.Display | null = null;
 
-  build() {
-    Row() {
-      // 侧边 Tab 栏
-      Column() {
-        this.SideTabItem("主页面" ,'app.media.home' , 0)
-        this.SideTabItem("游戏设置", 'app.media.tool', 1)
-        this.SideTabItem("游戏列表",'app.media.list', 2)
-        this.SideTabItem("下载",'app.media.download', 3)
-        this.SideTabItem("启动器设置",'app.media.settings', 4)
-      }
-      .width(60)
-      .height('100%')
-      .backgroundColor('#F5F5F5')
-      .padding({ top: 20 })
+    onPageShow(): void {
+        try {
+            this.screen  = display.getPrimaryDisplaySync()
+        } catch (exception) {
 
-      // 内容区域
-      Column() {
-        if (this.currentIndex === 0) {
-          HomePage()
-        } else if (this.currentIndex === 1) {
-          GameSettingsPage()
-        } else if (this.currentIndex === 2) {
-          GameListPage()
-        } else if (this.currentIndex === 3) {
-          DownloadPage()
-        } else{
-          LauncherSettingsPage()
         }
-      }
-      .width('100%')
-      .height('100%')
     }
-    .width('100%')
-    .height('100%')
-  }
 
-  @Builder SideTabItem(text: string, icon: string , index: number) {
-    Row() {
-      Image($r(icon))
-        .width(20)
-        .height(20)
-        .margin({ right: 10 })
-        .autoResize(true)
+    private tabItem: TabItem[] = [
+        {
+            text: "主页面",
+            icon: $r("app.media.home")
+        },
+        {
+            text: "游戏设置",
+            icon: $r("app.media.tool")
+        },
+        {
+            text: "游戏列表",
+            icon: $r("app.media.list")
+        },
+        {
+            text: "下载",
+            icon: $r("app.media.download")
+        },
+        {
+            text: "启动器设置",
+            icon: $r("app.media.settings")
+        }
+    ]
+
+
+    build() {
+        Column(){
+            Tabs({barPosition: BarPosition.Start,index: this.currentIndex}){
+                ForEach(this.tabItem, (item: TabItem, index: number) => {
+                    TabContent(){
+                        this.TabContent(index)
+                    }
+                    .tabBar(this.IconTabBar(item, index))
+                })
+            }
+            .vertical(true)
+            .scrollable(false)
+            //.backgroundImage($r("app.media.launcher_background_light"))
+        }
+        // .backgroundImage($r("app.media.launcher_background_light"))
+        // .backgroundImagePosition({x: 0, y: 0})
     }
-    .width('100%')
-    .height(60)
-    .padding({ left: 20 })
-    .backgroundColor(this.currentIndex === index ? '#E6F2FF' : 'transparent')
-    .borderRadius(8)
-    .justifyContent(FlexAlign.Start)
-    .alignItems(VerticalAlign.Center)
-    .onClick(() => {
-      this.currentIndex = index
-    })
-    .bindTips(text,{
-      appearingTime: 700,
-      disappearingTime: 300,
-      appearingTimeWithContinuousOperation: 300,
-      disappearingTimeWithContinuousOperation: 0,
-      enableArrow: true
-    })
-  }
+
+    @Builder
+    IconTabBar(item: TabItem, index: number) {
+        Column() {
+            // 图标
+            Image(item.icon)
+                .width(24)
+                .height(24)
+                //.fillColor(this.currentIndex===index?"#00BFFF":Color.Transparent)
+                //.backgroundColor(this.currentIndex===index?"#00BFFF":Color.Transparent)
+        }
+        .height(70)
+        .justifyContent(FlexAlign.Center)
+        .bindTips(item.text)
+        .onHover((hovering) => {
+            this.bindPopup(hovering, {
+                message: item.text,
+            })
+        })
+        .onClick(() => {
+            this.currentIndex = index
+        })
+
+    }
+
+    @Builder
+    TabContent(index: number) {
+        Column() {
+            if (index === 0) {
+                HomePage()
+            }
+            if (index === 1) {
+                GameSettingsPage()
+            }
+            if (index === 2) {
+                GameListPage()
+            }
+            if (index === 3) {
+                DownloadPage()
+            }
+            if (index === 4) {
+                LauncherSettingsPage()
+            }
+        }
+    }
 }
