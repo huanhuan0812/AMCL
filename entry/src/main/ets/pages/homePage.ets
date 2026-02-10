@@ -16,10 +16,10 @@ export default struct HomePage {
 
                 Image(this.globalValue.getCurrentAvatar())
                     .height('20%')
-                    .width('40%')
                     .alignRules({
                         center: { anchor: '__container__', align: VerticalAlign.Center },
                     })
+                    .width(this.height)
 
                 Text("游戏版本:")
                     .fontSize(15)
@@ -45,6 +45,9 @@ export default struct HomePage {
                 center: { anchor: '__container__', align: VerticalAlign.Center },
                 right: { anchor: '__container__', align: HorizontalAlign.End }
             })
+            .backgroundColor("ffffff")
+            .borderRadius(10)
+            .backdropBlur(10)
         }
         .height('100%')
         .width('100%')

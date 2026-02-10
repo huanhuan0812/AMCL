@@ -3,7 +3,6 @@ import GameSettingsPage from "./gameSettingsPage"
 import GameListPage from "./gameListPage"
 import DownloadPage from "./downloadPage"
 import LauncherSettingsPage from "./launcherSettingsPage"
-import { deviceInfo } from "@kit.BasicServicesKit"
 import { display } from "@kit.ArkUI"
 
 interface TabItem {
@@ -50,21 +49,32 @@ struct VerticalTabExample {
 
 
     build() {
-        Column(){
-            Tabs({barPosition: BarPosition.Start,index: this.currentIndex}){
-                ForEach(this.tabItem, (item: TabItem, index: number) => {
-                    TabContent(){
-                        this.TabContent(index)
-                    }
-                    .tabBar(this.IconTabBar(item, index))
-                })
+        Stack(){
+            Image($r("app.media.launcher_background_light"))
+                .width('100%')
+                .height('100%')
+                .objectFit(ImageFit.Fill)
+                .draggable(false)
+                .focusable(false)
+            Column(){
+                Tabs({barPosition: BarPosition.Start,index: this.currentIndex}){
+                    ForEach(this.tabItem, (item: TabItem, index: number) => {
+                        TabContent(){
+                            this.TabContent(index)
+                        }
+                        .tabBar(this.IconTabBar(item, index))
+                    })
+                }
+                .vertical(true)
+                .scrollable(false)
+                .height("100%")
+                //.backgroundImage($r("app.media.launcher_background_light"))
             }
-            .vertical(true)
-            .scrollable(false)
             //.backgroundImage($r("app.media.launcher_background_light"))
+            .height("100%")
+            .width("100%")
+            // .backgroundImagePosition({x: 0, y: 0})
         }
-        // .backgroundImage($r("app.media.launcher_background_light"))
-        // .backgroundImagePosition({x: 0, y: 0})
     }
 
     @Builder
@@ -88,7 +98,6 @@ struct VerticalTabExample {
         .onClick(() => {
             this.currentIndex = index
         })
-
     }
 
     @Builder
@@ -110,5 +119,9 @@ struct VerticalTabExample {
                 LauncherSettingsPage()
             }
         }
+        .width('100%')
+        .height('100%')
+        .padding(0)
+        .margin(0)
     }
 }
