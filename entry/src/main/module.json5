@@ -32,6 +32,15 @@
             ]
           }
         ]
+      },
+      {
+        "name": "FileManager",
+        "srcEntry": "./ets/filemanager/FileManager.ets",
+        "description": "$string:FileManager_desc",
+        "icon": "$media:layered_image",
+        "label": "$string:FileManager_label",
+        "startWindowIcon": "$media:startIcon",
+        "startWindowBackground": "$color:start_window_background"
       }
     ],
     "extensionAbilities": [

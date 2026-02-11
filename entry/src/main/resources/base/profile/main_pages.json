@@ -5,6 +5,7 @@
     "pages/downloadPage",
     "pages/gameSettingsPage",
     "pages/gameListPage",
-    "pages/launcherSettingsPage"
+    "pages/launcherSettingsPage",
+    "pages/fileManagerIndex"
   ]
 }

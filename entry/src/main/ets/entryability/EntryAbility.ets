@@ -45,4 +45,18 @@ export default class EntryAbility extends UIAbility {
     // Ability has back to background
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onBackground');
   }
+
+  onJumpToFileManager() :void{
+    let want: Want = {
+      deviceId: '', // deviceId为空表示本设备
+      bundleName: 'com.huanhuan.AMCL',
+      abilityName: 'FileManager'
+    };
+    this.context.startAbility(want, (err: BusinessError) => {
+      if (err.code) {
+        // 显式拉起Ability，通过bundleName、abilityName和moduleName可以唯一确定一个Ability
+        console.error(`Failed to startAbility. Code: ${err.code}, message: ${err.message}`);
+      }
+    });
+  }
 }

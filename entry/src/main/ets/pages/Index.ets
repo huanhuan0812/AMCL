@@ -3,7 +3,8 @@ import GameSettingsPage from "./gameSettingsPage"
 import GameListPage from "./gameListPage"
 import DownloadPage from "./downloadPage"
 import LauncherSettingsPage from "./launcherSettingsPage"
-import { display } from "@kit.ArkUI"
+import { display, FrameCallback } from "@kit.ArkUI"
+import { UIAbility, Want } from '@kit.AbilityKit';
 
 interface TabItem {
     text: string;
@@ -44,6 +45,10 @@ struct VerticalTabExample {
         {
             text: "启动器设置",
             icon: $r("app.media.settings")
+        },
+        {
+            text: "文件",
+            icon: $r("app.media.folder")
         }
     ]
 
@@ -97,6 +102,10 @@ struct VerticalTabExample {
         })
         .onClick(() => {
             this.currentIndex = index
+            if (this.currentIndex==5){
+                //FrameCallback(()=>{onJump})
+                //TODO
+            }
         })
     }
 
@@ -117,6 +126,9 @@ struct VerticalTabExample {
             }
             if (index === 4) {
                 LauncherSettingsPage()
+            }
+            else{
+
             }
         }
         .width('100%')
